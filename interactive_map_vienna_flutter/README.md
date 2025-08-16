@@ -1,15 +1,3 @@
-# interactive_map_vienna_flutter
+# Interactive Map Vienna Flutter
 
-A new Flutter project with Serverpod.
-
-## Getting Started
-
-This project is a starting point for a Flutter application that is using
-Serverpod.
-
-A great starting point for learning Serverpod is our documentation site at:
-[https://docs.serverpod.dev](https://docs.serverpod.dev).
-
-To run the project, first make sure that the server is running, then do:
-
-    flutter run
+A Flutter application that displays an interactive map of Vienna with real-time location tracking
