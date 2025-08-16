@@ -9,11 +9,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// and is set up to connect to a Serverpod running on a local server on
 /// the default port. You will need to modify this to connect to staging or
 /// production servers.
-/// In a larger app, you may want to use the dependency injection of your choice
-/// instead of using a global client object. This is just a simple example.
+/// In a larger app, you may want to use the dependency injection of your choice instead of
+/// using a global client object. This is just a simple example.
 late final Client client;
-
-late String serverUrl;
 
 void main() {
   // When you are running the app on a physical device, you need to set the
