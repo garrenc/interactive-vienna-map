@@ -3,6 +3,7 @@ recipe:
   - getRecipes:
 toilet:
   - uploadToilets:
+  - getToilets:
 waterStation:
   - uploadWaterStations:
   - getWaterStations:

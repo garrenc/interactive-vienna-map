@@ -16,8 +16,10 @@ import 'toilets/toilet.dart' as _i4;
 import 'waterStations/water_station.dart' as _i5;
 import 'package:interactive_map_vienna_client/src/protocol/recipes/recipe.dart'
     as _i6;
-import 'package:interactive_map_vienna_client/src/protocol/waterStations/water_station.dart'
+import 'package:interactive_map_vienna_client/src/protocol/toilets/toilet.dart'
     as _i7;
+import 'package:interactive_map_vienna_client/src/protocol/waterStations/water_station.dart'
+    as _i8;
 export 'greeting.dart';
 export 'recipes/recipe.dart';
 export 'toilets/toilet.dart';
@@ -65,9 +67,13 @@ class Protocol extends _i1.SerializationManager {
       return (data as List).map((e) => deserialize<_i6.Recipe>(e)).toList()
           as T;
     }
-    if (t == List<_i7.WaterStation>) {
+    if (t == List<_i7.Toilet>) {
+      return (data as List).map((e) => deserialize<_i7.Toilet>(e)).toList()
+          as T;
+    }
+    if (t == List<_i8.WaterStation>) {
       return (data as List)
-          .map((e) => deserialize<_i7.WaterStation>(e))
+          .map((e) => deserialize<_i8.WaterStation>(e))
           .toList() as T;
     }
     return super.deserialize<T>(data, t);

@@ -135,13 +135,13 @@ class ToiletEndpoint extends Endpoint {
     }
   }
 
-  // /// Returns all toilets from the database.
-  // Future<List<Toilet>> getToilets(Session session) async {
-  //   return Toilet.db.find(
-  //     session,
-  //     orderBy: (t) => t.district,
-  //   );
-  // }
+  /// Returns all toilets from the database.
+  Future<List<Toilet>> getToilets(Session session) async {
+    return Toilet.db.find(
+      session,
+      orderBy: (t) => t.district,
+    );
+  }
 
   // /// Returns toilets filtered by district
   // Future<List<Toilet>> getToiletsByDistrict(Session session, String district) async {

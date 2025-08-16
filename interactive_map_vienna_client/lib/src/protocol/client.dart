@@ -13,11 +13,13 @@ import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
 import 'package:interactive_map_vienna_client/src/protocol/recipes/recipe.dart'
     as _i3;
-import 'package:interactive_map_vienna_client/src/protocol/waterStations/water_station.dart'
+import 'package:interactive_map_vienna_client/src/protocol/toilets/toilet.dart'
     as _i4;
-import 'package:interactive_map_vienna_client/src/protocol/greeting.dart'
+import 'package:interactive_map_vienna_client/src/protocol/waterStations/water_station.dart'
     as _i5;
-import 'protocol.dart' as _i6;
+import 'package:interactive_map_vienna_client/src/protocol/greeting.dart'
+    as _i6;
+import 'protocol.dart' as _i7;
 
 /// This is the endpoint that will be used to generate a recipe using the
 /// Google Gemini API. It extends the Endpoint class and implements the
@@ -58,6 +60,14 @@ class EndpointToilet extends _i1.EndpointRef {
         'uploadToilets',
         {},
       );
+
+  /// Returns all toilets from the database.
+  _i2.Future<List<_i4.Toilet>> getToilets() =>
+      caller.callServerEndpoint<List<_i4.Toilet>>(
+        'toilet',
+        'getToilets',
+        {},
+      );
 }
 
 /// {@category Endpoint}
@@ -74,8 +84,8 @@ class EndpointWaterStation extends _i1.EndpointRef {
       );
 
   /// This method returns all the generated recipes from the database.
-  _i2.Future<List<_i4.WaterStation>> getWaterStations() =>
-      caller.callServerEndpoint<List<_i4.WaterStation>>(
+  _i2.Future<List<_i5.WaterStation>> getWaterStations() =>
+      caller.callServerEndpoint<List<_i5.WaterStation>>(
         'waterStation',
         'getWaterStations',
         {},
@@ -92,8 +102,8 @@ class EndpointGreeting extends _i1.EndpointRef {
   String get name => 'greeting';
 
   /// Returns a personalized greeting message: "Hello {name}".
-  _i2.Future<_i5.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_i5.Greeting>(
+  _i2.Future<_i6.Greeting> hello(String name) =>
+      caller.callServerEndpoint<_i6.Greeting>(
         'greeting',
         'hello',
         {'name': name},
@@ -116,7 +126,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i6.Protocol(),
+          _i7.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,

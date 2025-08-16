@@ -90,7 +90,16 @@ class Endpoints extends _i1.EndpointDispatch {
           ) async =>
               (endpoints['toilet'] as _i3.ToiletEndpoint)
                   .uploadToilets(session),
-        )
+        ),
+        'getToilets': _i1.MethodConnector(
+          name: 'getToilets',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['toilet'] as _i3.ToiletEndpoint).getToilets(session),
+        ),
       },
     );
     connectors['waterStation'] = _i1.EndpointConnector(
