@@ -1,5 +1,10 @@
 recipe:
   - generateRecipe:
   - getRecipes:
+toilet:
+  - uploadToilets:
+waterStation:
+  - uploadWaterStations:
+  - getWaterStations:
 greeting:
   - hello:

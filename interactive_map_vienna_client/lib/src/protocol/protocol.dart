@@ -12,10 +12,16 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'greeting.dart' as _i2;
 import 'recipes/recipe.dart' as _i3;
+import 'toilets/toilet.dart' as _i4;
+import 'waterStations/water_station.dart' as _i5;
 import 'package:interactive_map_vienna_client/src/protocol/recipes/recipe.dart'
-    as _i4;
+    as _i6;
+import 'package:interactive_map_vienna_client/src/protocol/waterStations/water_station.dart'
+    as _i7;
 export 'greeting.dart';
 export 'recipes/recipe.dart';
+export 'toilets/toilet.dart';
+export 'waterStations/water_station.dart';
 export 'client.dart';
 
 class Protocol extends _i1.SerializationManager {
@@ -37,15 +43,32 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i3.Recipe) {
       return _i3.Recipe.fromJson(data) as T;
     }
+    if (t == _i4.Toilet) {
+      return _i4.Toilet.fromJson(data) as T;
+    }
+    if (t == _i5.WaterStation) {
+      return _i5.WaterStation.fromJson(data) as T;
+    }
     if (t == _i1.getType<_i2.Greeting?>()) {
       return (data != null ? _i2.Greeting.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i3.Recipe?>()) {
       return (data != null ? _i3.Recipe.fromJson(data) : null) as T;
     }
-    if (t == List<_i4.Recipe>) {
-      return (data as List).map((e) => deserialize<_i4.Recipe>(e)).toList()
+    if (t == _i1.getType<_i4.Toilet?>()) {
+      return (data != null ? _i4.Toilet.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i5.WaterStation?>()) {
+      return (data != null ? _i5.WaterStation.fromJson(data) : null) as T;
+    }
+    if (t == List<_i6.Recipe>) {
+      return (data as List).map((e) => deserialize<_i6.Recipe>(e)).toList()
           as T;
+    }
+    if (t == List<_i7.WaterStation>) {
+      return (data as List)
+          .map((e) => deserialize<_i7.WaterStation>(e))
+          .toList() as T;
     }
     return super.deserialize<T>(data, t);
   }
@@ -59,6 +82,12 @@ class Protocol extends _i1.SerializationManager {
     }
     if (data is _i3.Recipe) {
       return 'Recipe';
+    }
+    if (data is _i4.Toilet) {
+      return 'Toilet';
+    }
+    if (data is _i5.WaterStation) {
+      return 'WaterStation';
     }
     return null;
   }
@@ -74,6 +103,12 @@ class Protocol extends _i1.SerializationManager {
     }
     if (dataClassName == 'Recipe') {
       return deserialize<_i3.Recipe>(data['data']);
+    }
+    if (dataClassName == 'Toilet') {
+      return deserialize<_i4.Toilet>(data['data']);
+    }
+    if (dataClassName == 'WaterStation') {
+      return deserialize<_i5.WaterStation>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

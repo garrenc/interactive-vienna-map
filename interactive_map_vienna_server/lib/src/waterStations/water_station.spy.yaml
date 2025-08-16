@@ -1,0 +1,12 @@
+### Our AI generated Recipe
+class: WaterStation
+table: water_stations
+fields:
+  ### The object id of the water station
+  objectId: String
+  ### The name of the water station
+  type: String
+  ### The latitude of the water station
+  latitude: double
+  ### The longitude of the water station
+  longitude: double

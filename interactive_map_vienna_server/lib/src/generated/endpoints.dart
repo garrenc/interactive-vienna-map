@@ -11,7 +11,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/recipe_endpoint.dart' as _i2;
-import '../greeting_endpoint.dart' as _i3;
+import '../endpoints/toilet_endpoint.dart' as _i3;
+import '../endpoints/water_station_endpoint.dart' as _i4;
+import '../greeting_endpoint.dart' as _i5;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -23,7 +25,19 @@ class Endpoints extends _i1.EndpointDispatch {
           'recipe',
           null,
         ),
-      'greeting': _i3.GreetingEndpoint()
+      'toilet': _i3.ToiletEndpoint()
+        ..initialize(
+          server,
+          'toilet',
+          null,
+        ),
+      'waterStation': _i4.WaterStationEndpoint()
+        ..initialize(
+          server,
+          'waterStation',
+          null,
+        ),
+      'greeting': _i5.GreetingEndpoint()
         ..initialize(
           server,
           'greeting',
@@ -63,6 +77,48 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
+    connectors['toilet'] = _i1.EndpointConnector(
+      name: 'toilet',
+      endpoint: endpoints['toilet']!,
+      methodConnectors: {
+        'uploadToilets': _i1.MethodConnector(
+          name: 'uploadToilets',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['toilet'] as _i3.ToiletEndpoint)
+                  .uploadToilets(session),
+        )
+      },
+    );
+    connectors['waterStation'] = _i1.EndpointConnector(
+      name: 'waterStation',
+      endpoint: endpoints['waterStation']!,
+      methodConnectors: {
+        'uploadWaterStations': _i1.MethodConnector(
+          name: 'uploadWaterStations',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['waterStation'] as _i4.WaterStationEndpoint)
+                  .uploadWaterStations(session),
+        ),
+        'getWaterStations': _i1.MethodConnector(
+          name: 'getWaterStations',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['waterStation'] as _i4.WaterStationEndpoint)
+                  .getWaterStations(session),
+        ),
+      },
+    );
     connectors['greeting'] = _i1.EndpointConnector(
       name: 'greeting',
       endpoint: endpoints['greeting']!,
@@ -80,7 +136,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['greeting'] as _i3.GreetingEndpoint).hello(
+              (endpoints['greeting'] as _i5.GreetingEndpoint).hello(
             session,
             params['name'],
           ),

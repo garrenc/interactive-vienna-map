@@ -1,0 +1,40 @@
+### Toilet schema based on WCANLAGE2OGD.csv
+class: Toilet
+table: toilets
+fields:
+  ### The object id of the toilet
+  objectId: String
+  ### The WC_ID from the dataset
+  wcId: String
+  ### The district number
+  district: String
+  ### The street address
+  street: String
+  ### Additional location information
+  locationDetails: String?
+  ### Whether the toilet is active
+  isActive: bool
+  ### Opening hours
+  openingHours: String
+  ### Restrictions information
+  restrictions: String
+  ### Staff supervision information
+  staffSupervision: String
+  ### Category information
+  category: String
+  ### Equipment/facilities information
+  equipment: String
+  ### Icon type
+  icon: String
+  ### Accessibility information
+  iconText: String
+  ### Contact information
+  contact: String
+  ### Department responsible
+  department: String
+  ### URL with more information
+  information: String
+  ### The latitude of the toilet
+  latitude: double
+  ### The longitude of the toilet
+  longitude: double
