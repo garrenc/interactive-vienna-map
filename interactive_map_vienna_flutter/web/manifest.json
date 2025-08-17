@@ -1,6 +1,6 @@
 {
-    "name": "interactive_map_vienna_flutter",
-    "short_name": "interactive_map_vienna_flutter",
+    "name": "Hidden Map",
+    "short_name": "Hidden Map",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
