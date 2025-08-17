@@ -1,8 +1,10 @@
 import 'package:interactive_map_vienna_client/interactive_map_vienna_client.dart';
 import 'package:flutter/material.dart';
 import 'package:interactive_map_vienna_flutter/screens/home.dart';
+import 'package:interactive_map_vienna_flutter/services/theme.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 /// Sets up a global client object that can be used to talk to the server from
 /// anywhere in our app. The client is generated from your server code
@@ -14,6 +16,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 late final Client client;
 
 void main() {
+  // Preserve the splash screen until the app is ready
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   // When you are running the app on a physical device, you need to set the
   // server URL to the IP address of your computer. You can find the IP
   // address by running `ipconfig` on Windows or `ifconfig` on Mac/Linux.
@@ -27,14 +33,27 @@ void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Remove the splash screen when the app is ready
+    FlutterNativeSplash.remove();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Interactive Map Vienna',
-      theme: ThemeData(primarySwatch: Colors.blue),
+      title: 'Hidden Map',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeService.lightTheme,
       home: const HomeScreen(),
     );
   }
