@@ -10,40 +10,125 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../endpoints/recipe_endpoint.dart' as _i2;
-import '../endpoints/toilet_endpoint.dart' as _i3;
-import '../endpoints/water_station_endpoint.dart' as _i4;
-import '../greeting_endpoint.dart' as _i5;
+import '../endpoints/poi_endpoint.dart' as _i2;
+import '../endpoints/recipe_endpoint.dart' as _i3;
+import '../endpoints/toilet_endpoint.dart' as _i4;
+import '../endpoints/water_station_endpoint.dart' as _i5;
+import '../greeting_endpoint.dart' as _i6;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
   void initializeEndpoints(_i1.Server server) {
     var endpoints = <String, _i1.Endpoint>{
-      'recipe': _i2.RecipeEndpoint()
+      'pOI': _i2.POIEndpoint()
+        ..initialize(
+          server,
+          'pOI',
+          null,
+        ),
+      'recipe': _i3.RecipeEndpoint()
         ..initialize(
           server,
           'recipe',
           null,
         ),
-      'toilet': _i3.ToiletEndpoint()
+      'toilet': _i4.ToiletEndpoint()
         ..initialize(
           server,
           'toilet',
           null,
         ),
-      'waterStation': _i4.WaterStationEndpoint()
+      'waterStation': _i5.WaterStationEndpoint()
         ..initialize(
           server,
           'waterStation',
           null,
         ),
-      'greeting': _i5.GreetingEndpoint()
+      'greeting': _i6.GreetingEndpoint()
         ..initialize(
           server,
           'greeting',
           null,
         ),
     };
+    connectors['pOI'] = _i1.EndpointConnector(
+      name: 'pOI',
+      endpoint: endpoints['pOI']!,
+      methodConnectors: {
+        'testEncodings': _i1.MethodConnector(
+          name: 'testEncodings',
+          params: {
+            'filePath': _i1.ParameterDescription(
+              name: 'filePath',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['pOI'] as _i2.POIEndpoint).testEncodings(
+            session,
+            params['filePath'],
+          ),
+        ),
+        'testCsvEncodings': _i1.MethodConnector(
+          name: 'testCsvEncodings',
+          params: {
+            'filePath': _i1.ParameterDescription(
+              name: 'filePath',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['pOI'] as _i2.POIEndpoint).testCsvEncodings(
+            session,
+            params['filePath'],
+          ),
+        ),
+        'uploadPOIs': _i1.MethodConnector(
+          name: 'uploadPOIs',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['pOI'] as _i2.POIEndpoint).uploadPOIs(session),
+        ),
+        'getPOIs': _i1.MethodConnector(
+          name: 'getPOIs',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['pOI'] as _i2.POIEndpoint).getPOIs(session),
+        ),
+        'getTextToPoi': _i1.MethodConnector(
+          name: 'getTextToPoi',
+          params: {
+            'poiId': _i1.ParameterDescription(
+              name: 'poiId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['pOI'] as _i2.POIEndpoint).getTextToPoi(
+            session,
+            params['poiId'],
+          ),
+        ),
+      },
+    );
     connectors['recipe'] = _i1.EndpointConnector(
       name: 'recipe',
       endpoint: endpoints['recipe']!,
@@ -61,7 +146,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['recipe'] as _i2.RecipeEndpoint).generateRecipe(
+              (endpoints['recipe'] as _i3.RecipeEndpoint).generateRecipe(
             session,
             params['ingredients'],
           ),
@@ -73,7 +158,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['recipe'] as _i2.RecipeEndpoint).getRecipes(session),
+              (endpoints['recipe'] as _i3.RecipeEndpoint).getRecipes(session),
         ),
       },
     );
@@ -88,7 +173,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['toilet'] as _i3.ToiletEndpoint)
+              (endpoints['toilet'] as _i4.ToiletEndpoint)
                   .uploadToilets(session),
         ),
         'getToilets': _i1.MethodConnector(
@@ -98,7 +183,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['toilet'] as _i3.ToiletEndpoint).getToilets(session),
+              (endpoints['toilet'] as _i4.ToiletEndpoint).getToilets(session),
         ),
       },
     );
@@ -113,7 +198,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['waterStation'] as _i4.WaterStationEndpoint)
+              (endpoints['waterStation'] as _i5.WaterStationEndpoint)
                   .uploadWaterStations(session),
         ),
         'getWaterStations': _i1.MethodConnector(
@@ -123,7 +208,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['waterStation'] as _i4.WaterStationEndpoint)
+              (endpoints['waterStation'] as _i5.WaterStationEndpoint)
                   .getWaterStations(session),
         ),
       },
@@ -145,7 +230,7 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['greeting'] as _i5.GreetingEndpoint).hello(
+              (endpoints['greeting'] as _i6.GreetingEndpoint).hello(
             session,
             params['name'],
           ),

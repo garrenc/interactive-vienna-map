@@ -1,3 +1,9 @@
+pOI:
+  - testEncodings:
+  - testCsvEncodings:
+  - uploadPOIs:
+  - getPOIs:
+  - getTextToPoi:
 recipe:
   - generateRecipe:
   - getRecipes:

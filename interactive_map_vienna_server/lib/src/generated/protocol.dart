@@ -12,16 +12,20 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'greeting.dart' as _i3;
-import 'recipes/recipe.dart' as _i4;
-import 'toilets/toilet.dart' as _i5;
-import 'waterStations/water_station.dart' as _i6;
-import 'package:interactive_map_vienna_server/src/generated/recipes/recipe.dart'
-    as _i7;
-import 'package:interactive_map_vienna_server/src/generated/toilets/toilet.dart'
+import 'poi/poi.dart' as _i4;
+import 'recipes/recipe.dart' as _i5;
+import 'toilets/toilet.dart' as _i6;
+import 'waterStations/water_station.dart' as _i7;
+import 'package:interactive_map_vienna_server/src/generated/poi/poi.dart'
     as _i8;
-import 'package:interactive_map_vienna_server/src/generated/waterStations/water_station.dart'
+import 'package:interactive_map_vienna_server/src/generated/recipes/recipe.dart'
     as _i9;
+import 'package:interactive_map_vienna_server/src/generated/toilets/toilet.dart'
+    as _i10;
+import 'package:interactive_map_vienna_server/src/generated/waterStations/water_station.dart'
+    as _i11;
 export 'greeting.dart';
+export 'poi/poi.dart';
 export 'recipes/recipe.dart';
 export 'toilets/toilet.dart';
 export 'waterStations/water_station.dart';
@@ -34,6 +38,189 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final List<_i2.TableDefinition> targetTableDefinitions = [
+    _i2.TableDefinition(
+      name: 'pois',
+      dartName: 'POI',
+      schema: 'public',
+      module: 'interactive_map_vienna',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'pois_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'title',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _i2.ColumnDefinition(
+          name: 'category',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'description',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'address',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'zip',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'city',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'latitude',
+          columnType: _i2.ColumnType.doublePrecision,
+          isNullable: true,
+          dartType: 'double?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'longitude',
+          columnType: _i2.ColumnType.doublePrecision,
+          isNullable: true,
+          dartType: 'double?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'tel1',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'tel1Comment',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'tel2',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'tel2Comment',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'tel3',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'tel3Comment',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'email',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'webUrl',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'url',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _i2.ColumnDefinition(
+          name: 'imageUrl',
+          columnType: _i2.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'pois_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'poi_title_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'title',
+            )
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'poi_category_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'category',
+            )
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'poi_geo_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'latitude',
+            ),
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'longitude',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     _i2.TableDefinition(
       name: 'recipes',
       dartName: 'Recipe',
@@ -298,38 +485,47 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i3.Greeting) {
       return _i3.Greeting.fromJson(data) as T;
     }
-    if (t == _i4.Recipe) {
-      return _i4.Recipe.fromJson(data) as T;
+    if (t == _i4.POI) {
+      return _i4.POI.fromJson(data) as T;
     }
-    if (t == _i5.Toilet) {
-      return _i5.Toilet.fromJson(data) as T;
+    if (t == _i5.Recipe) {
+      return _i5.Recipe.fromJson(data) as T;
     }
-    if (t == _i6.WaterStation) {
-      return _i6.WaterStation.fromJson(data) as T;
+    if (t == _i6.Toilet) {
+      return _i6.Toilet.fromJson(data) as T;
+    }
+    if (t == _i7.WaterStation) {
+      return _i7.WaterStation.fromJson(data) as T;
     }
     if (t == _i1.getType<_i3.Greeting?>()) {
       return (data != null ? _i3.Greeting.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i4.Recipe?>()) {
-      return (data != null ? _i4.Recipe.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i4.POI?>()) {
+      return (data != null ? _i4.POI.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i5.Toilet?>()) {
-      return (data != null ? _i5.Toilet.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i5.Recipe?>()) {
+      return (data != null ? _i5.Recipe.fromJson(data) : null) as T;
     }
-    if (t == _i1.getType<_i6.WaterStation?>()) {
-      return (data != null ? _i6.WaterStation.fromJson(data) : null) as T;
+    if (t == _i1.getType<_i6.Toilet?>()) {
+      return (data != null ? _i6.Toilet.fromJson(data) : null) as T;
     }
-    if (t == List<_i7.Recipe>) {
-      return (data as List).map((e) => deserialize<_i7.Recipe>(e)).toList()
+    if (t == _i1.getType<_i7.WaterStation?>()) {
+      return (data != null ? _i7.WaterStation.fromJson(data) : null) as T;
+    }
+    if (t == List<_i8.POI>) {
+      return (data as List).map((e) => deserialize<_i8.POI>(e)).toList() as T;
+    }
+    if (t == List<_i9.Recipe>) {
+      return (data as List).map((e) => deserialize<_i9.Recipe>(e)).toList()
           as T;
     }
-    if (t == List<_i8.Toilet>) {
-      return (data as List).map((e) => deserialize<_i8.Toilet>(e)).toList()
+    if (t == List<_i10.Toilet>) {
+      return (data as List).map((e) => deserialize<_i10.Toilet>(e)).toList()
           as T;
     }
-    if (t == List<_i9.WaterStation>) {
+    if (t == List<_i11.WaterStation>) {
       return (data as List)
-          .map((e) => deserialize<_i9.WaterStation>(e))
+          .map((e) => deserialize<_i11.WaterStation>(e))
           .toList() as T;
     }
     try {
@@ -345,13 +541,16 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i3.Greeting) {
       return 'Greeting';
     }
-    if (data is _i4.Recipe) {
+    if (data is _i4.POI) {
+      return 'POI';
+    }
+    if (data is _i5.Recipe) {
       return 'Recipe';
     }
-    if (data is _i5.Toilet) {
+    if (data is _i6.Toilet) {
       return 'Toilet';
     }
-    if (data is _i6.WaterStation) {
+    if (data is _i7.WaterStation) {
       return 'WaterStation';
     }
     className = _i2.Protocol().getClassNameForObject(data);
@@ -370,14 +569,17 @@ class Protocol extends _i1.SerializationManagerServer {
     if (dataClassName == 'Greeting') {
       return deserialize<_i3.Greeting>(data['data']);
     }
+    if (dataClassName == 'POI') {
+      return deserialize<_i4.POI>(data['data']);
+    }
     if (dataClassName == 'Recipe') {
-      return deserialize<_i4.Recipe>(data['data']);
+      return deserialize<_i5.Recipe>(data['data']);
     }
     if (dataClassName == 'Toilet') {
-      return deserialize<_i5.Toilet>(data['data']);
+      return deserialize<_i6.Toilet>(data['data']);
     }
     if (dataClassName == 'WaterStation') {
-      return deserialize<_i6.WaterStation>(data['data']);
+      return deserialize<_i7.WaterStation>(data['data']);
     }
     if (dataClassName.startsWith('serverpod.')) {
       data['className'] = dataClassName.substring(10);
@@ -395,12 +597,14 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i4.Recipe:
-        return _i4.Recipe.t;
-      case _i5.Toilet:
-        return _i5.Toilet.t;
-      case _i6.WaterStation:
-        return _i6.WaterStation.t;
+      case _i4.POI:
+        return _i4.POI.t;
+      case _i5.Recipe:
+        return _i5.Recipe.t;
+      case _i6.Toilet:
+        return _i6.Toilet.t;
+      case _i7.WaterStation:
+        return _i7.WaterStation.t;
     }
     return null;
   }

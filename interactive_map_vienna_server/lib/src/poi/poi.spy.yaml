@@ -1,0 +1,29 @@
+class: POI
+table: pois
+fields:
+  id: int?
+  title: String
+  category: String?
+  description: String?
+  address: String?
+  zip: String?
+  city: String?
+  latitude: double?
+  longitude: double?
+  tel1: String?
+  tel1Comment: String?
+  tel2: String?
+  tel2Comment: String?
+  tel3: String?
+  tel3Comment: String?
+  email: String?
+  webUrl: String?
+  url: String?
+  imageUrl: String?
+indexes:
+  poi_title_idx:
+    fields: title
+  poi_category_idx:
+    fields: category
+  poi_geo_idx:
+    fields: latitude, longitude

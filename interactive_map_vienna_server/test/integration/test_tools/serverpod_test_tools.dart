@@ -14,14 +14,16 @@
 import 'package:serverpod_test/serverpod_test.dart' as _i1;
 import 'package:serverpod/serverpod.dart' as _i2;
 import 'dart:async' as _i3;
-import 'package:interactive_map_vienna_server/src/generated/recipes/recipe.dart'
+import 'package:interactive_map_vienna_server/src/generated/poi/poi.dart'
     as _i4;
-import 'package:interactive_map_vienna_server/src/generated/toilets/toilet.dart'
+import 'package:interactive_map_vienna_server/src/generated/recipes/recipe.dart'
     as _i5;
-import 'package:interactive_map_vienna_server/src/generated/waterStations/water_station.dart'
+import 'package:interactive_map_vienna_server/src/generated/toilets/toilet.dart'
     as _i6;
-import 'package:interactive_map_vienna_server/src/generated/greeting.dart'
+import 'package:interactive_map_vienna_server/src/generated/waterStations/water_station.dart'
     as _i7;
+import 'package:interactive_map_vienna_server/src/generated/greeting.dart'
+    as _i8;
 import 'package:interactive_map_vienna_server/src/generated/protocol.dart';
 import 'package:interactive_map_vienna_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -108,6 +110,8 @@ void withServerpod(
 }
 
 class TestEndpoints {
+  late final _POIEndpoint pOI;
+
   late final _RecipeEndpoint recipe;
 
   late final _ToiletEndpoint toilet;
@@ -124,6 +128,10 @@ class _InternalTestEndpoints extends TestEndpoints
     _i2.SerializationManager serializationManager,
     _i2.EndpointDispatch endpoints,
   ) {
+    pOI = _POIEndpoint(
+      endpoints,
+      serializationManager,
+    );
     recipe = _RecipeEndpoint(
       endpoints,
       serializationManager,
@@ -143,6 +151,157 @@ class _InternalTestEndpoints extends TestEndpoints
   }
 }
 
+class _POIEndpoint {
+  _POIEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<void> testEncodings(
+    _i1.TestSessionBuilder sessionBuilder,
+    String filePath,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'pOI',
+        method: 'testEncodings',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'pOI',
+          methodName: 'testEncodings',
+          parameters: _i1.testObjectToJson({'filePath': filePath}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<void> testCsvEncodings(
+    _i1.TestSessionBuilder sessionBuilder,
+    String filePath,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'pOI',
+        method: 'testCsvEncodings',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'pOI',
+          methodName: 'testCsvEncodings',
+          parameters: _i1.testObjectToJson({'filePath': filePath}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<void> uploadPOIs(_i1.TestSessionBuilder sessionBuilder) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'pOI',
+        method: 'uploadPOIs',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'pOI',
+          methodName: 'uploadPOIs',
+          parameters: _i1.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<List<_i4.POI>> getPOIs(
+      _i1.TestSessionBuilder sessionBuilder) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'pOI',
+        method: 'getPOIs',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'pOI',
+          methodName: 'getPOIs',
+          parameters: _i1.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<List<_i4.POI>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<_i4.POI> getTextToPoi(
+    _i1.TestSessionBuilder sessionBuilder,
+    int poiId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'pOI',
+        method: 'getTextToPoi',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'pOI',
+          methodName: 'getTextToPoi',
+          parameters: _i1.testObjectToJson({'poiId': poiId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i4.POI>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _RecipeEndpoint {
   _RecipeEndpoint(
     this._endpointDispatch,
@@ -153,7 +312,7 @@ class _RecipeEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i4.Recipe> generateRecipe(
+  _i3.Future<_i5.Recipe> generateRecipe(
     _i1.TestSessionBuilder sessionBuilder,
     String ingredients,
   ) async {
@@ -174,7 +333,7 @@ class _RecipeEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i4.Recipe>);
+        ) as _i3.Future<_i5.Recipe>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -182,7 +341,7 @@ class _RecipeEndpoint {
     });
   }
 
-  _i3.Future<List<_i4.Recipe>> getRecipes(
+  _i3.Future<List<_i5.Recipe>> getRecipes(
       _i1.TestSessionBuilder sessionBuilder) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -201,7 +360,7 @@ class _RecipeEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i4.Recipe>>);
+        ) as _i3.Future<List<_i5.Recipe>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -246,7 +405,7 @@ class _ToiletEndpoint {
     });
   }
 
-  _i3.Future<List<_i5.Toilet>> getToilets(
+  _i3.Future<List<_i6.Toilet>> getToilets(
       _i1.TestSessionBuilder sessionBuilder) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -265,7 +424,7 @@ class _ToiletEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i5.Toilet>>);
+        ) as _i3.Future<List<_i6.Toilet>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -311,7 +470,7 @@ class _WaterStationEndpoint {
     });
   }
 
-  _i3.Future<List<_i6.WaterStation>> getWaterStations(
+  _i3.Future<List<_i7.WaterStation>> getWaterStations(
       _i1.TestSessionBuilder sessionBuilder) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -330,7 +489,7 @@ class _WaterStationEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<List<_i6.WaterStation>>);
+        ) as _i3.Future<List<_i7.WaterStation>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -349,7 +508,7 @@ class _GreetingEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.Greeting> hello(
+  _i3.Future<_i8.Greeting> hello(
     _i1.TestSessionBuilder sessionBuilder,
     String name,
   ) async {
@@ -370,7 +529,7 @@ class _GreetingEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i7.Greeting>);
+        ) as _i3.Future<_i8.Greeting>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
