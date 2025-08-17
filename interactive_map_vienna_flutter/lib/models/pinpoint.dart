@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 
 enum PinpointType {
   toilet,
@@ -60,6 +61,14 @@ class Pinpoint {
       imageUrl: json['imageUrl'] ?? '',
       latitude: json['latitude'],
       longitude: json['longitude'],
+    );
+  }
+
+  SymbolOptions toSymbolOptions() {
+    return SymbolOptions(
+      geometry: LatLng(latitude, longitude),
+      iconImage: type.asset,
+      iconSize: 2.5,
     );
   }
 }

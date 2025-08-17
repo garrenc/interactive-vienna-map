@@ -18,9 +18,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   List<Pinpoint> _pinpoints = [];
 
-  final List<Symbol> _symbols = [];
-
-  final Map<PinpointType, bool> _symbolsInProgress = {};
+  List<Symbol> _symbols = [];
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +27,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       extendBodyBehindAppBar: true, // let content go under the bar
       appBar: FrostedAppBar(
         onPinpointsSelected: (type, remove) async {
-          _symbolsInProgress.clear();
-          if (remove && _symbols.map((e) => e.data?['type']).toSet().length == 1) {
-            await _mapController!.clearSymbols();
-            return;
-          }
-          _symbolsInProgress[type] = true;
-          _pinpoints = _pinpoints.where((element) => element.type == type).toList();
+          if (remove) {
+            var symbolsToRemove = _symbols.where((element) => element.options.iconImage == type.asset).toList();
 
-          for (var i = 0; i < _pinpoints.length; i++) {
-            if (_symbolsInProgress[type] != true) {
-              break;
-            }
-            remove ? await _removeMarker(_pinpoints[i]) : await _addMarker(_pinpoints[i]);
+            await _mapController!.removeSymbols(symbolsToRemove);
+            _symbols.removeWhere((element) => symbolsToRemove.contains(element));
+          } else {
+            var symbols = _pinpoints.where((element) => element.type == type).map((element) => element.toSymbolOptions()).toList();
+
+            var result = await _mapController!.addSymbols(symbols);
+
+            _symbols.addAll(result);
           }
-          _symbolsInProgress[type] = false;
         },
       ),
       /* drawer: Drawer(
@@ -106,17 +101,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _addMarker(Pinpoint pinpoint) async {
-    var symbol = await _mapController!.addSymbol(
-        SymbolOptions(
-          geometry: LatLng(pinpoint.latitude, pinpoint.longitude),
-          iconImage: pinpoint.type.asset,
-          iconSize: 2.5,
-        ),
-        {'id': pinpoint.id, 'type': pinpoint.type.name});
-    _symbols.add(symbol);
   }
 
   Future<void> _removeMarker(Pinpoint pinpoint) async {
