@@ -17,16 +17,6 @@ class WaterStationEndpoint extends Endpoint {
       // Parse the CSV
       final rowsAsListOfValues = const CsvToListConverter().convert(input);
 
-      // Print the header for reference
-      print('CSV Header:');
-      print(rowsAsListOfValues[0]);
-      print('');
-
-      // Extract and print only the relevant water station data
-      print('Water Station Data:');
-      print('Format: [objectId, name, latitude, longitude]');
-      print('');
-
       for (var i = 1; i < rowsAsListOfValues.length; i++) {
         final row = rowsAsListOfValues[i];
         if (row.length >= 3) {
@@ -55,15 +45,9 @@ class WaterStationEndpoint extends Endpoint {
               objectId: objectId, type: name, latitude: double.parse(latitude), longitude: double.parse(longitude));
 
           // Save the recipe to the database, the returned recipe has the id set
-          final waterStationWithId = await WaterStation.db.insertRow(session, waterStation);
-
-          // Print the extracted data
-          print('[$objectId, $name, $latitude, $longitude]');
+          await WaterStation.db.insertRow(session, waterStation);
         }
       }
-
-      print('');
-      print('Total water stations processed: ${rowsAsListOfValues.length - 1}');
     } catch (e) {
       print('Error reading or parsing the CSV file: $e');
     }
