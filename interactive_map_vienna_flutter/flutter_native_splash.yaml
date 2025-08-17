@@ -8,11 +8,11 @@ flutter_native_splash:
   # App logo/icon
   image: "assets/images/logo.png"
   
-  # App name text
-  branding: "assets/images/logo.png"
+  # App name text (removed to show only logo)
+  # branding: "assets/images/logo.png"
   
-  # Text color
-  color_dark: "#000000"
+  # Text color (not needed since no text)
+  # color_dark: "#000000"
   
   # Fullscreen mode
   fullscreen: true
