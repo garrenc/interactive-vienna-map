@@ -2,6 +2,7 @@ import 'package:interactive_map_vienna_client/interactive_map_vienna_client.dart
 import 'package:flutter/material.dart';
 import 'package:interactive_map_vienna_flutter/screens/home.dart';
 import 'package:interactive_map_vienna_flutter/services/map_icons.dart';
+import 'package:interactive_map_vienna_flutter/services/location_permission_service.dart';
 import 'package:interactive_map_vienna_flutter/services/theme.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,12 +17,18 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 /// using a global client object. This is just a simple example.
 late final Client client;
 
+/// Global navigator key for showing dialogs from anywhere in the app
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   // Preserve the splash screen until the app is ready
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await MapIconsService.preloadIcons();
+
+  // Check and request location permissions automatically on app start
+  await _checkLocationPermissionsOnStartup();
 
   // When you are running the app on a physical device, you need to set the
   // server URL to the IP address of your computer. You can find the IP
@@ -59,5 +66,47 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeService.lightTheme,
       home: const HomeScreen(),
     );
+  }
+}
+
+/// Check and request location permissions on app startup
+Future<void> _checkLocationPermissionsOnStartup() async {
+  try {
+    // Wait a bit for the app to fully initialize
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    // Check if location services are enabled
+    final isLocationServiceEnabled = await LocationPermissionService.isLocationServiceEnabled();
+    if (!isLocationServiceEnabled) {
+      // Location services are disabled, but we won't show a dialog here
+      // as the app is still starting up. The user can enable them later.
+      return;
+    }
+
+    // Check current permission status
+    final hasPermission = await LocationPermissionService.hasLocationPermission();
+    if (hasPermission) {
+      // Permission already granted, nothing to do
+      return;
+    }
+
+    // Check if permission is permanently denied
+    final isPermanentlyDenied = await LocationPermissionService.isLocationPermissionPermanentlyDenied();
+    if (isPermanentlyDenied) {
+      // Permission permanently denied, user needs to go to settings
+      // We'll handle this when they actually try to use location features
+      return;
+    }
+
+    // Permission not granted but not permanently denied, try to request it silently
+    final granted = await LocationPermissionService.requestLocationPermissionSilently();
+    if (granted) {
+      debugPrint('Location permission granted on startup');
+    } else {
+      debugPrint('Location permission not granted on startup, will request when needed');
+    }
+  } catch (e) {
+    // Log error but don't crash the app
+    debugPrint('Error checking location permissions on startup: $e');
   }
 }
