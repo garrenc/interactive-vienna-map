@@ -135,7 +135,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _mapController!.onSymbolTapped.add((symbol) {
       // we need to also sadjust it to map rotation :)
       _mapController!.animateCamera(
-        CameraUpdate.newLatLngZoom(LatLng(symbol.options.geometry!.latitude - 0.001, symbol.options.geometry!.longitude), 16),
+        CameraUpdate.newLatLngZoom(LatLng(symbol.options.geometry!.latitude, symbol.options.geometry!.longitude), 16),
         duration: const Duration(milliseconds: 500),
       );
       BottomModalSheetService.showBottomModalSheet(context, pinpoint: _pinpoints.firstWhere((element) => element.id == symbol.data?['id']));

@@ -66,7 +66,7 @@ class _BottomSheetInfoState extends State<BottomSheetInfo> {
                     topRight: Radius.circular(16),
                   ),
                   child: Image.network(
-                    'https://www.city-walks.info/Wien/bilder/Stephansdom-Wien-Wahrzeichen.JPG',
+                    widget.pinpoint.imageUrl!,
                     width: double.infinity,
                     height: 130,
                     fit: BoxFit.cover,
