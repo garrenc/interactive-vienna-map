@@ -18,7 +18,7 @@ enum PinpointType {
   Color get color => switch (this) {
         toilet => Colors.grey,
         water => Colors.teal,
-        audioGuide => Colors.orange,
+        audioGuide => Color(0xFFE4B07A),
         charging => Colors.green,
         wifi => Colors.deepPurpleAccent,
       };
@@ -30,14 +30,36 @@ enum PinpointType {
         charging => 'Charging',
         wifi => 'Wifi',
       };
+
+  String get asset => switch (this) { toilet => 'toilet', water => 'water', audioGuide => 'audio', _ => '' };
+
+  String? get imageModal => switch (this) {
+        toilet => 'toilet_image',
+        water => 'water_drinking',
+        _ => null,
+      };
 }
 
 class Pinpoint {
   final PinpointType type;
   final String id;
   final String title;
+  final double latitude;
+  final double longitude;
   final String description;
-  final String imageUrl;
+  final String? imageUrl;
 
-  Pinpoint({required this.type, required this.id, required this.title, required this.description, required this.imageUrl});
+  Pinpoint({required this.type, required this.id, required this.title, required this.description, required this.imageUrl, required this.latitude, required this.longitude});
+
+  factory Pinpoint.fromJson(Map<String, dynamic> json, {required PinpointType type}) {
+    return Pinpoint(
+      type: type,
+      id: json['id'].toString(),
+      title: json['title'] ?? type.title,
+      description: json['description'] ?? '',
+      imageUrl: json['imageUrl'] ?? '',
+      latitude: json['latitude'],
+      longitude: json['longitude'],
+    );
+  }
 }

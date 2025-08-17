@@ -1,6 +1,7 @@
 import 'package:interactive_map_vienna_client/interactive_map_vienna_client.dart';
 import 'package:flutter/material.dart';
 import 'package:interactive_map_vienna_flutter/screens/home.dart';
+import 'package:interactive_map_vienna_flutter/services/map_icons.dart';
 import 'package:interactive_map_vienna_flutter/services/theme.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,10 +16,12 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 /// using a global client object. This is just a simple example.
 late final Client client;
 
-void main() {
+void main() async {
   // Preserve the splash screen until the app is ready
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  await MapIconsService.preloadIcons();
 
   // When you are running the app on a physical device, you need to set the
   // server URL to the IP address of your computer. You can find the IP

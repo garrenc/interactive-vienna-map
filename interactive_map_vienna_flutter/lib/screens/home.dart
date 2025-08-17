@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:interactive_map_vienna_flutter/models/pinpoint.dart';
+import 'package:interactive_map_vienna_flutter/providers/map_data.dart';
+import 'package:interactive_map_vienna_flutter/services/botton_modal_sheet.dart';
+import 'package:interactive_map_vienna_flutter/services/map_icons.dart';
 import 'package:interactive_map_vienna_flutter/widgets/frosted_app_bar.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,103 +16,79 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   MapLibreMapController? _mapController;
 
+  List<Pinpoint> _pinpoints = [];
+
+  final List<Symbol> _symbols = [];
+
+  final Map<PinpointType, bool> _symbolsInProgress = {};
+
   @override
   Widget build(BuildContext context) {
+    final mapData = ref.watch(mapDataNotifierProvider);
     return Scaffold(
       extendBodyBehindAppBar: true, // let content go under the bar
-      appBar: FrostedAppBar(),
-      drawer: Drawer(
+      appBar: FrostedAppBar(
+        onPinpointsSelected: (type, remove) async {
+          _symbolsInProgress.clear();
+          if (remove && _symbols.map((e) => e.data?['type']).toSet().length == 1) {
+            await _mapController!.clearSymbols();
+            return;
+          }
+          _symbolsInProgress[type] = true;
+          _pinpoints = _pinpoints.where((element) => element.type == type).toList();
+
+          for (var i = 0; i < _pinpoints.length; i++) {
+            if (_symbolsInProgress[type] != true) {
+              break;
+            }
+            remove ? await _removeMarker(_pinpoints[i]) : await _addMarker(_pinpoints[i]);
+          }
+          _symbolsInProgress[type] = false;
+        },
+      ),
+      /* drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue.shade700,
-              ),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hidden Map',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Discover hidden places in Vienna',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.map),
-              title: const Text('Map View'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text('About'),
-              onTap: () {
-                Navigator.pop(context);
-                // TODO: Navigate to about page
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-                // TODO: Navigate to settings page
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.help),
-              title: const Text('Help & Support'),
-              onTap: () {
-                Navigator.pop(context);
-                // TODO: Navigate to help page
-              },
-            ),
-          ],
+          children: [],
         ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: MapLibreMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: const LatLng(48.2082, 16.3738),
-                zoom: 17, // High detail zoom
-              ),
-              styleString: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-              rotateGesturesEnabled: true,
-              trackCameraPosition: true,
-              compassEnabled: false,
-              // Enable built-in location features
-              myLocationEnabled: true,
-              myLocationTrackingMode: MyLocationTrackingMode.tracking, // Start with none, then enable tracking
-              // Enable all gestures for maximum user control
-              scrollGesturesEnabled: true,
-              zoomGesturesEnabled: true,
-              tiltGesturesEnabled: true,
-              doubleClickZoomEnabled: true,
-              // Customize attribution button
-              attributionButtonPosition: AttributionButtonPosition.topRight,
-            ),
-          ),
-        ],
-      ),
+      ),*/
+      body: mapData.when(
+          data: (data) {
+            if (_pinpoints.isEmpty) {
+              _pinpoints = data;
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: MapLibreMap(
+                    onMapCreated: _onMapCreated,
+                    initialCameraPosition: CameraPosition(
+                      target: const LatLng(48.2082, 16.3738),
+                      zoom: 17, // High detail zoom
+                    ),
+                    styleString: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+                    rotateGesturesEnabled: true,
+                    trackCameraPosition: true,
+                    compassEnabled: false,
+
+                    // Enable built-in location features
+                    myLocationEnabled: true,
+                    myLocationTrackingMode: MyLocationTrackingMode.tracking, // Start with none, then enable tracking
+                    // Enable all gestures for maximum user control
+                    scrollGesturesEnabled: true,
+                    zoomGesturesEnabled: true,
+                    tiltGesturesEnabled: false,
+                    doubleClickZoomEnabled: true,
+                    // Customize attribution button
+                    attributionButtonPosition: AttributionButtonPosition.topRight,
+                  ),
+                ),
+              ],
+            );
+          },
+          error: (error, stackTrace) => Text(error.toString()),
+          loading: () => const Center(child: CircularProgressIndicator())),
       floatingActionButton: Transform.rotate(
         angle: 5.5,
         child: Container(
@@ -128,8 +108,39 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     );
   }
 
+  Future<void> _addMarker(Pinpoint pinpoint) async {
+    var symbol = await _mapController!.addSymbol(
+        SymbolOptions(
+          geometry: LatLng(pinpoint.latitude, pinpoint.longitude),
+          iconImage: pinpoint.type.asset,
+          iconSize: 2.5,
+        ),
+        {'id': pinpoint.id, 'type': pinpoint.type.name});
+    _symbols.add(symbol);
+  }
+
+  Future<void> _removeMarker(Pinpoint pinpoint) async {
+    var symbol = _symbols.firstWhere((element) => element.data?['type'] == pinpoint.type.name);
+    await _mapController!.removeSymbol(symbol);
+    _symbols.remove(symbol);
+  }
+
   void _onMapCreated(MapLibreMapController controller) {
     _mapController = controller;
+
+    MapIconsService.assets.forEach((key, value) {
+      _mapController!.addImage(key.asset, value);
+    });
+
+    _mapController!.onSymbolTapped.add((symbol) {
+      // we need to also sadjust it to map rotation :)
+      _mapController!.animateCamera(
+        CameraUpdate.newLatLngZoom(LatLng(symbol.options.geometry!.latitude - 0.001, symbol.options.geometry!.longitude), 16),
+        duration: const Duration(milliseconds: 500),
+      );
+      BottomModalSheetService.showBottomModalSheet(context, pinpoint: _pinpoints.firstWhere((element) => element.id == symbol.data?['id']));
+    });
+
     // Wait a bit for location to be available, then center on user
     Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {

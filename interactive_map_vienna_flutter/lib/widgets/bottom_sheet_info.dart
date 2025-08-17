@@ -33,10 +33,11 @@ class _BottomSheetInfoState extends State<BottomSheetInfo> {
               Text(widget.pinpoint.title, style: TextStyle(fontSize: 20)),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(widget.pinpoint.description),
-          ),
+          if (widget.pinpoint.description.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text(widget.pinpoint.description),
+            ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
@@ -44,16 +45,17 @@ class _BottomSheetInfoState extends State<BottomSheetInfo> {
                 ...widget.pinpoint.type == PinpointType.audioGuide
                     ? [_buildIconButton(onTap: () {}, icon: Icon(Icons.play_arrow_rounded, size: 40, color: Colors.white), title: 'Play')]
                     : [
-                        _buildInfoIconWidget(icon: Icons.euro, title: '10€'),
-                        _buildInfoIconWidget(icon: Icons.access_time_outlined, title: '1h'),
+                        _buildInfoIconWidget(icon: Icons.euro, title: widget.pinpoint.type == PinpointType.toilet ? '50c' : 'Free'),
+                        SizedBox(width: 26),
+                        _buildInfoIconWidget(icon: Icons.access_time_outlined, title: widget.pinpoint.type == PinpointType.toilet ? 'Open 7-9' : '24/7'),
                       ],
                 Spacer(),
                 _buildIconButton(onTap: () {}, icon: Transform.rotate(angle: 5.5, child: Icon(Icons.navigation, size: 30, color: color)), title: 'Navigate', inversed: true),
               ],
             ),
           ),
-          SizedBox(height: 20),
-          if (widget.pinpoint.imageUrl.isNotEmpty)
+          const Spacer(),
+          if (widget.pinpoint.imageUrl != null && widget.pinpoint.imageUrl!.isNotEmpty)
             Container(
                 padding: EdgeInsets.only(
                   bottom: 16,
@@ -64,12 +66,25 @@ class _BottomSheetInfoState extends State<BottomSheetInfo> {
                     topRight: Radius.circular(16),
                   ),
                   child: Image.network(
-                    widget.pinpoint.imageUrl,
+                    'https://www.city-walks.info/Wien/bilder/Stephansdom-Wien-Wahrzeichen.JPG',
                     width: double.infinity,
-                    height: 200,
+                    height: 130,
                     fit: BoxFit.cover,
+                    alignment: Alignment(0.0, -0.1),
                   ),
-                )),
+                ))
+          else if ((widget.pinpoint.type == PinpointType.toilet || widget.pinpoint.type == PinpointType.water) && widget.pinpoint.type.imageModal != null)
+            Container(
+              padding: EdgeInsets.only(
+                bottom: 16,
+              ),
+              child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                  child: Image.asset('assets/images/${widget.pinpoint.type.imageModal}.png', height: 250, width: double.infinity, fit: BoxFit.cover)),
+            ),
         ],
       ),
     );

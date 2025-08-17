@@ -4,7 +4,8 @@ import 'package:interactive_map_vienna_flutter/models/pinpoint.dart';
 import 'package:interactive_map_vienna_flutter/widgets/pintpoint_icon.dart';
 
 class FrostedAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const FrostedAppBar({super.key});
+  final Function(PinpointType type, bool remove) onPinpointsSelected;
+  const FrostedAppBar({super.key, required this.onPinpointsSelected});
 
   // Heights for title row and the icons row
   static const double _toolbar = 110;
@@ -28,7 +29,7 @@ class _FrostedAppBarState extends State<FrostedAppBar> {
       toolbarHeight: FrostedAppBar._toolbar, // area for the title (excludes status bar)
       titleSpacing: 0,
 
-      leading: Container(
+      /*leading: Container(
         margin: const EdgeInsets.only(left: 8),
         child: IconButton(
           icon: const Icon(
@@ -44,7 +45,7 @@ class _FrostedAppBarState extends State<FrostedAppBar> {
             ),
           ),
         ),
-      ),
+      ),*/
 
       // Frosted background that reaches all the way up (under the notch)
       flexibleSpace: ClipRRect(
@@ -100,6 +101,7 @@ class _FrostedAppBarState extends State<FrostedAppBar> {
                             selectedPinpoints.add(type);
                           }
                         });
+                        widget.onPinpointsSelected(type, !selectedPinpoints.contains(type));
                       }))
                   .toList(),
             ),
