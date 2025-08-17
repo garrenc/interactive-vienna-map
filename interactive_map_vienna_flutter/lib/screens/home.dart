@@ -126,7 +126,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         CameraUpdate.newLatLngZoom(LatLng(symbol.options.geometry!.latitude, symbol.options.geometry!.longitude), 16),
         duration: const Duration(milliseconds: 500),
       );
-      BottomModalSheetService.showBottomModalSheet(context, pinpoint: _pinpoints.firstWhere((element) => element.id == symbol.data?['id']));
+      BottomModalSheetService.showBottomModalSheet(context,
+          pinpoint: _pinpoints.firstWhere((element) => element.latitude == symbol.options.geometry!.latitude && element.longitude == symbol.options.geometry!.longitude));
     });
 
     // Wait a bit for location to be available, then center on user
