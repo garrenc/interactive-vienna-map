@@ -37,12 +37,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
             List<SymbolOptions> symbols = [];
 
-            for (var pinpoint in _pinpoints.where((element) => element.type == type)) {
-              symbols.add(pinpoint.toSymbolOptions());
-              data.add({
-                'id': pinpoint.id,
-                'type': pinpoint.type.name,
-              });
+            for (var pinpoint in _pinpoints) {
+              if (pinpoint.type == type) {
+                symbols.add(pinpoint.toSymbolOptions());
+                data.add({
+                  'id': pinpoint.id,
+                  'type': pinpoint.type.name,
+                });
+              }
             }
 
             var result = await _mapController!.addSymbols(symbols, data);
@@ -127,7 +129,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         duration: const Duration(milliseconds: 500),
       );
       BottomModalSheetService.showBottomModalSheet(context,
-          pinpoint: _pinpoints.firstWhere((element) => element.latitude == symbol.options.geometry!.latitude && element.longitude == symbol.options.geometry!.longitude));
+          pinpoint: _pinpoints.firstWhere((element) =>
+              element.latitude.toStringAsFixed(4) == symbol.options.geometry!.latitude.toStringAsFixed(4) &&
+              element.longitude.toStringAsFixed(4) == symbol.options.geometry!.longitude.toStringAsFixed(4)));
     });
 
     // Wait a bit for location to be available, then center on user

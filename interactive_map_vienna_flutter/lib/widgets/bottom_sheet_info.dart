@@ -34,9 +34,16 @@ class _BottomSheetInfoState extends State<BottomSheetInfo> {
             ],
           ),
           if (widget.pinpoint.description.isNotEmpty)
-            Padding(
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: 170,
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(widget.pinpoint.description),
+              child: Text(
+                widget.pinpoint.description,
+                maxLines: 7,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
