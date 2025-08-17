@@ -18,7 +18,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   List<Pinpoint> _pinpoints = [];
 
-  List<Symbol> _symbols = [];
+  final List<Symbol> _symbols = [];
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +33,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             await _mapController!.removeSymbols(symbolsToRemove);
             _symbols.removeWhere((element) => symbolsToRemove.contains(element));
           } else {
-            var symbols = _pinpoints.where((element) => element.type == type).map((element) => element.toSymbolOptions()).toList();
+            List<Map<String, dynamic>> data = [];
 
-            var result = await _mapController!.addSymbols(symbols);
+            List<SymbolOptions> symbols = [];
+
+            for (var pinpoint in _pinpoints.where((element) => element.type == type)) {
+              symbols.add(pinpoint.toSymbolOptions());
+              data.add({
+                'id': pinpoint.id,
+                'type': pinpoint.type.name,
+              });
+            }
+
+            var result = await _mapController!.addSymbols(symbols, data);
 
             _symbols.addAll(result);
           }
@@ -101,12 +111,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _removeMarker(Pinpoint pinpoint) async {
-    var symbol = _symbols.firstWhere((element) => element.data?['type'] == pinpoint.type.name);
-    await _mapController!.removeSymbol(symbol);
-    _symbols.remove(symbol);
   }
 
   void _onMapCreated(MapLibreMapController controller) {
